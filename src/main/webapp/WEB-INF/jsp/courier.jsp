@@ -9,9 +9,7 @@
 			href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
 			integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
 			crossorigin="anonymous">
-		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-			integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-			crossorigin="anonymous"></script>
+		<<script src="js/jquery-3.6.0.min.js"></script>
 		<script
 			src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
 			integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
@@ -29,7 +27,7 @@
 				box-shadow: none;
 			}		
 		</style>
-		<script type="text/javascript" src="js/courier.js"></script>
+		<script src="js/courier.js"></script>
 	</head>
 <body>
 	<div style="padding:2rem;">
@@ -37,7 +35,7 @@
 		  <div class="card">
 		    <div class="card-header" id="headingOne">
 		      <h2 class="mb-0">
-		        <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+		        <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#addOrUpdate" aria-expanded="true" aria-controls="addOrUpdate">
 					<c:if test="${showUpdate}">
 						Update Courier
 					</c:if>
@@ -48,7 +46,7 @@
 		      </h2>
 		    </div>
 		
-		    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+		    <div id="addOrUpdate" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
 		      <div class="card-body">
 				<c:if test="${not empty addMessage}">
 					<div class="alert alert-warning" role="alert">
@@ -117,14 +115,14 @@
 										</c:if>
 									</select>
 									<label for="" class="text-center col-sm-2">Courier SLA</label>
-									<input type="text" name="CourierSLA" class="form-control col-sm-2" />
+									<input type="text" name="CourierSLA" class="form-control col-sm-2" value="${Courier.courierSLA}" />
 								</div>
 								<br>
 								<div class="form-row">
 									<label for="" class="text-center col-sm-2">Courier Tracking Format</label>
-									<input type="text" name="CourierTrackingFormat" class="form-control col-sm-2"/>
+									<input type="text" name="CourierTrackingFormat" class="form-control col-sm-2" value="${Courier.courierTrackingIdFormat}"/>
 									<label for="" class="text-center col-sm-2">Courier Tracking Msg</label>
-									<input type="text" name="CourierTrackingMsg" class="form-control col-sm-2" />
+									<input type="text" name="CourierTrackingMsg" class="form-control col-sm-2" value="${Courier.courierTrackingIdMsg}"/>
 								</div>
 								<br>
 								<div class="form-row">
@@ -214,12 +212,12 @@
 		  <div class="card">
 		    <div class="card-header" id="headingTwo">
 		      <h2 class="mb-0">
-		        <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+		        <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#search" aria-expanded="false" aria-controls="search">
 					Search Courier
 		        </button>
 		      </h2>
 		    </div>
-		    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+		    <div id="search" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
 		      <div class="card-body">
 				<c:if test="${failedSearch}">
 					<div class="alert alert-warning" role="alert">
@@ -288,6 +286,19 @@
 	});
 
 	$(document).ready(function (){
+
+		const searchResults = "${searchResults}";
+		const updateShow = "${updateShow}";
+		const addShow = "${addShow}";
+		console.log(searchResults + " " + updateShow + " " + addShow);
+
+		if(searchResults === "true"){
+			$('#courierSearchResults').collapse('show');
+		}
+		if(updateShow === "true" || addShow === "true"){
+			$('#addOrUpdate').collapse('show');
+		}
+
 		$('#courierSearchResults').DataTable({
 			pageLength: 5,
 			ajax: {

@@ -46,7 +46,7 @@ public class CourierDAOImpl implements CourierDAO {
 
 	private final String SELECT_courier = "SELECT * FROM courier WHERE courierId = ?";
 
-	private final String SELECT_ALL_courier = "SELECT courierName, courierAddress, courierStatus, courierWebSite FROM courier WHERE courierName LIKE ?";
+	private final String SELECT_ALL_courier = "SELECT * FROM courier WHERE courierName LIKE ?";
 
 	@Override
 	public Courier addCourier(Courier objCourier) {
@@ -71,7 +71,6 @@ public class CourierDAOImpl implements CourierDAO {
 				}, keyHolder);
 		long courierId = keyHolder.getKey().longValue();
 
-		System.out.println(result);
 		if(result > 0) {
 			objCourier.setCourierId(courierId);
 			return objCourier;
@@ -100,7 +99,7 @@ public class CourierDAOImpl implements CourierDAO {
 
 	@Override
 	public Courier getCourierById(long id) {
-		Courier objCourier = jdbcTemplate.queryForObject(SELECT_courier, new Object[] {id}, new CourierRowMapper());
+		Courier objCourier = jdbcTemplate.queryForObject(SELECT_courier, new CourierRowMapper(), id);
 
 		if(objCourier != null){
 			return objCourier;

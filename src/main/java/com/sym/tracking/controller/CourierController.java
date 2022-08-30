@@ -50,6 +50,7 @@ public class CourierController extends AbstractController{
 		Courier objCourier = createCourier(params);
 		Courier returnedCourier = objCourierService.addCourier(objCourier);
 		if(returnedCourier != null) {
+			System.out.println(returnedCourier.toString());
 			StringBuilder sb = new StringBuilder("Courier '" + returnedCourier.getCourierName() + "' added successfully");
 			model.addAttribute("Courier", objCourier);
 			model.addAttribute("addMessage", sb.toString());
@@ -91,14 +92,15 @@ public class CourierController extends AbstractController{
 		return "courier";
 	}
 	
-	@RequestMapping(value = "/searchcourier", method = RequestMethod.POST)
+	@RequestMapping(value = "/searchcouriers", method = RequestMethod.POST)
 	public String searchCourier(@RequestParam(name="SearchedQuery") String searchedCourier, Model model){
 		List<StatusCode> statusCodes = objTrackingNumberService.getStatusCodes();
 		model.addAttribute("StatusCodes", statusCodes);
 
+		System.out.println("im here");
 		List<Courier> couriers = objCourierService.getAllCouriers(searchedCourier + "%");
 		if(couriers.size() > 0){
-			model.addAttribute("Couriers", couriers);
+			model.addAttribute("searchedCouriers", couriers);
 			model.addAttribute("searchResults", true);
 			model.addAttribute("searchCrit", "<li>Results for "+searchedCourier+"</li>");
 		} else {
